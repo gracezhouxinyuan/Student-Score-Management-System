@@ -77,14 +77,63 @@ void calc_all() {
 }
 
 void show_grade() {
+    int i;
+    printf("========全年级成绩排名========\n");
+    printf("年级 班级 学号 姓名 数学 物理 C语言 总分 年级排名 班排名\n");
+    for(i=0;i<studentCount;i++)
+    {
+        printf("%d  %d  %s %s %d %d %d %d %d %d\n",
+        stu[i].year,stu[i].class,stu[i].id,stu[i].name,
+        stu[i].math,stu[i].physics,stu[i].c,stu[i].total,
+        stu[i].rankGrade,stu[i].rankClass);
+}
+
 
 }
 
 void show_class() {
+    int cls,i,flag=0;
+    printf("请输入要查询的班级号：");
+    scanf("%d",&cls);
+    printf("=====%d班成绩=====\n",cls);
+    printf("年级 班级 学号 姓名 数学 物理 C语言 总分 年级排名 班排名\n");
+    for(i=0;i<studentCount;i++)
+    {
+        if(stu[i].class==cls)
+        {
+            flag=1;
+            printf("%d  %d  %s %s %d %d %d %d %d %d\n",
+            stu[i].year,stu[i].class,stu[i].id,stu[i].name,
+            stu[i].math,stu[i].physics,stu[i].c,stu[i].total,
+            stu[i].rankGrade,stu[i].rankClass);
+        }
+    }
+    if(flag==0)
+        printf("无该班级学生数据\n");
+
 
 }
 
 void search_name() {
+    char na[20];
+    int i,find=0;
+    printf("输入需要查找的学生姓名：");
+    scanf("%s",na);
+    printf("年级 班级 学号 姓名 数学 物理 C语言 总分 年级排名 班排名\n");
+    for(i=0;i<studentCount;i++)
+    {
+        if(strcmp(stu[i].name,na)==0)
+        {
+            find=1;
+            printf("%d  %d  %s %s %d %d %d %d %d %d\n",
+            stu[i].year,stu[i].class,stu[i].id,stu[i].name,
+            stu[i].math,stu[i].physics,stu[i].c,stu[i].total,
+            stu[i].rankGrade,stu[i].rankClass);
+        }
+    }
+    if(find==0)
+        printf("未查询到此姓名学生\n");
+
 
 }
 
