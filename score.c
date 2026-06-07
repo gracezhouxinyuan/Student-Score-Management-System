@@ -65,15 +65,73 @@ int str_to_int(char *str, int i, int n) {
 }
 
 void read_file() {
+FILE*fp=fopen("score.txt","r");
+    if(fp==NULL){
+        printf("打不开文件\n");
+        return;
+    }
 
+    while(stu_num<MAX_STUDENT){
+        if(fscanf(fp,"%s %s %d %d %d",
+            stu[stu_num].id,
+            stu[stu_num].name,
+            &stu[stu_num].math,
+            &stu[stu_num].physics,
+            &stu[stu_num].c_lang)!=5){
+            break;
+        }
+
+        stu[stu_num].grade=(stu[stu_num].id[0]-'0')*1000+
+            stu[stu_num].id[1]-'0')*100+
+            stu[stu_num].id[2]-'0')*10+
+            stu[stu_num].id[3]-'0');
+
+        stu[stu_num].class=(stu[stu_num].id[4]-'0')*10+
+        (stu[stu_num].id[5]-'0');
+
+        stu[stu_num].total=0;
+        stu[stu_num].grade_rank=0;
+        stu[stu_num].class_rank=0;
+
+        stu_num++;
+    }
+
+    fclose(fp);
+    printf("读了%d个学生\n",stu_num);
 }
 
 void show_menu() {
-
+    printf("\n======成绩系统======\n");
+    printf("1.读文件\n");
+    printf("2.菜单\n");
+    printf("3.算总分平均分\n");
+    printf("4.按成绩排\n");
+    printf("5.按班级看\n");
+    printf("6.查名字\n");
+    printf("7.按分数段查\n");
+    printf("8.存文件\n");
+    printf("9.单科排名\n");
+    printf("0.退出\n");
+    printf("=====================\n");
+    printf("选哪个：");
 }
 
 void calc_all() {
+    if(count==0){
+        printf("还没读数据，先执行1\n");
+        return;
+    }
 
+    int sum=0,i=0;
+    for(i<count;i++){
+        stu[i].total=stu[i].score;
+        stu[i].avg=stu[i].score;
+        sum=sum+stu[i].score;
+    }
+
+    float ave=(float)sum/count;
+    printf("全班总分：%d\n",sum);
+    printf("全班平均：%.2f\n",ave);
 }
 
 void show_grade() {
@@ -91,7 +149,7 @@ void show_grade() {
 
 }
 
-void show_class() {
+void show_class() {int i
     int cls,i,flag=0;
     printf("请输入要查询的班级号：");
     scanf("%d",&cls);
