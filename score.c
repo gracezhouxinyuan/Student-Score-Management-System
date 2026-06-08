@@ -270,31 +270,41 @@ void save_file(struct Student stu[], int studentCount) {
     fclose(fp);
     printf("成绩排名已成功保存到 score_rank.txt\n");
 }
-
-void search_single(struct Student stu[], int studentCount) {
-    char target_id[15];
-    int found = 0, i;
-
+void search_single() {
+    printf("\n--- 按单科分数降序查询成绩 ---\n");
     if (studentCount == 0) {
         printf("暂无学生数据，请先读取文件！\n");
         return;
     }
-
-    printf("请输入要查询的学生学号：");
-    scanf("%s", target_id);
-
-    printf("-------------------------------------------------------------------------------------\n");
-    printf("%-8s %-6s %-12s %-12s %-6s %-6s %-6s %-6s %-8s %-8s\n","年级", "班级", "学号", "姓名", "数学", "物理", "C语言", "总分", "年级排名", "班级排名");
-    printf("-------------------------------------------------------------------------------------\n");
-
-    for (i = 0; i < studentCount; i++) {
-        if (strcmp(stu[i].id, target_id) == 0) {
-            printf("%-6d %-4d %-10s %-10s %-4d %-4d %-4d %-5d %-8d %-6d\n",stu[i].year, stu[i].class, stu[i].id, stu[i].name,stu[i].math, stu[i].physics, stu[i].c, stu[i].total,stu[i].rankGrade, stu[i].rankClass);
-            found = 1;
-            break;
+    int subject_choice;
+    printf("请选择要排序的科目 (1.数学  2.物理  3.C语言): ");
+    scanf("%d", &subject_choice);
+    if (subject_choice < 1 || subject_choice > 3) {
+        printf("输入无效！\n");
+        return;
+    }
+    struct Student temp_stu[MAX_STUDENT];
+    for (int i = 0; i < studentCount; i++) {
+        temp_stu[i] = stu[i];
+    }
+    for (int i = 0; i < studentCount - 1; i++) {
+        for (int j = 0; j < studentCount - 1 - i; j++) {
+            int should_swap = 0;
+            if (subject_choice == 1 && temp_stu[j].math < temp_stu[j + 1].math) should_swap = 1;
+            if (subject_choice == 2 && temp_stu[j].physics < temp_stu[j + 1].physics) should_swap = 1;
+            if (subject_choice == 3 && temp_stu[j].c < temp_stu[j + 1].c) should_swap = 1;
+            if (should_swap) {
+                struct Student temp = temp_stu[j];
+                temp_stu[j] = temp_stu[j + 1];
+                temp_stu[j + 1] = temp;
+            }
         }
     }
-    printf("-------------------------------------------------------------------------------------\n");
-
-    if (found == 0) printf("没有找到学号为 %s 的学生。\n", target_id);
+    printf("\n年级  班级  学号            姓名       数学  物理  C语言  总分\n");
+    printf("------------------------------------------------------------------\n");
+    for (int i = 0; i < studentCount; i++) {
+        printf("%d  %02d  %-13s  %-9s  %-4d  %-4d  %-4d  %-4d\n",
+               temp_stu[i].year, temp_stu[i].class, temp_stu[i].id, temp_stu[i].name,
+               temp_stu[i].math, temp_stu[i].physics, temp_stu[i].c, temp_stu[i].total);
+    }
 }
