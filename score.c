@@ -195,12 +195,88 @@ void search_name() {
 }
 
 void search_range() {
+int min_score, max_score;
+    int found = 0;
 
+    printf("\n--- 按总分区间查询 ---\n");
+    if (studentCount == 0) {
+        printf("暂无学生数据，请先读取文件！\n");
+        return;
+    }
+
+    printf("请输入最低总分: ");
+    scanf("%d", &min_score);
+    printf("请输入最高总分: ");
+    scanf("%d", &max_score);
+
+    printf("\n%-15s %-15s %-6s %-6s %-6s %-6s %-6s %-6s %-8s %-8s\n", 
+           "学号", "姓名", "数学", "物理", "C语言", "总分", "入学年", "班级", "年级排名", "班级排名");
+    printf("------------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < studentCount; i++) {
+        if (stu[i].total >= min_score && stu[i].total <= max_score) {
+            printf("%-15s %-15s %-6d %-6d %-6d %-6d %-6d %-6d %-8d %-8d\n",
+                   stu[i].id, stu[i].name, stu[i].math, stu[i].physics, stu[i].c,
+                   stu[i].total, stu[i].year, stu[i].class, stu[i].rankGrade, stu[i].rankClass);
+            found++;
+        }
+    }
+
+    if (found == 0) {
+        printf("没有找到总分在 %d 到 %d 之间的学生。\n", min_score, max_score);
+    } else {
+        printf("共查询到 %d 名学生。\n", found);
+    }
 }
 void save_file() {
+FILE *fp = fopen("score_rank.txt", "w");
+    if (fp == NULL) {
+        printf("错误：无法创建或打开 score_rank.txt 文件！\n");
+        return;
+    }
 
+    // 表头和对齐完全复刻任务 7
+    fprintf(fp, "%-15s %-15s %-6s %-6s %-6s %-6s %-6s %-6s %-8s %-8s\n", 
+            "学号", "姓名", "数学", "物理", "C语言", "总分", "入学年", "班级", "年级排名", "班级排名");
+    fprintf(fp, "------------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < studentCount; i++) {
+        fprintf(fp, "%-15s %-15s %-6d %-6d %-6d %-6d %-6d %-6d %-8d %-8d\n",
+                stu[i].id, stu[i].name, stu[i].math, stu[i].physics, stu[i].c,
+                stu[i].total, stu[i].year, stu[i].class, stu[i].rankGrade, stu[i].rankClass);
+    }
+
+    fclose(fp);
 }
 
 void search_single() {
+char target_id[15];
+    int found = 0;
 
+    printf("\n--- 精确查询单个学生（加分功能）---\n");
+    if (studentCount == 0) {
+        printf("暂无学生数据，请先读取文件！\n");
+        return;
+    }
+
+    printf("请输入要查询的学生学号: ");
+    scanf("%s", target_id);
+
+    // 打印单人表头，保持整体视觉效果高度统一
+    printf("\n%-15s %-15s %-6s %-6s %-6s %-6s %-6s %-6s %-8s %-8s\n", "学号", "姓名", "数学", "物理", "C语言", "总分", "入学年", "班级", "年级排名", "班级排名");
+    printf("------------------------------------------------------------------------------------\n");
+
+    for (int i = 0; i < studentCount; i++) {
+        if (strcmp(stu[i].id, target_id) == 0) {
+            printf("%-15s %-15s %-6d %-6d %-6d %-6d %-6d %-6d %-8d %-8d\n",
+                   stu[i].id, stu[i].name, stu[i].math, stu[i].physics, stu[i].c,
+                   stu[i].total, stu[i].year, stu[i].class, stu[i].rankGrade, stu[i].rankClass);
+            found = 1;
+            break; // 学号是唯一的，找到就退出循环
+        }
+    }
+
+    if (found == 0) {
+        printf("没有找到学号为 %s 的学生。\n", target_id);
+    }
 }
