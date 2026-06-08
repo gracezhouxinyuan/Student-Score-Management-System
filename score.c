@@ -17,7 +17,6 @@ struct Student {
     int rankClass;
 };
 
-/* 函数声明 */
 int  read_file(struct Student stu[]);
 void show_menu();
 void calc_all(struct Student stu[], int studentCount);
@@ -270,8 +269,7 @@ void save_file(struct Student stu[], int studentCount) {
     fclose(fp);
     printf("成绩排名已成功保存到 score_rank.txt\n");
 }
-void search_single() {
-    printf("\n--- 按单科分数降序查询成绩 ---\n");
+void search_single(struct Student stu[], int studentCount) {
     if (studentCount == 0) {
         printf("暂无学生数据，请先读取文件！\n");
         return;
@@ -300,11 +298,13 @@ void search_single() {
             }
         }
     }
-    printf("\n年级  班级  学号            姓名       数学  物理  C语言  总分\n");
-    printf("------------------------------------------------------------------\n");
+    printf("-------------------------------------------------------------------------------------\n");
+    printf("%-8s %-6s %-12s %-12s %-6s %-6s %-6s %-6s %-8s %-8s\n","年级", "班级", "学号", "姓名", "数学", "物理", "C语言", "总分", "年级排名", "班级排名");
+    printf("-------------------------------------------------------------------------------------\n");
     for (int i = 0; i < studentCount; i++) {
-        printf("%d  %02d  %-13s  %-9s  %-4d  %-4d  %-4d  %-4d\n",
+        printf("%-6d %-4d %-10s %-10s %-4d %-4d %-4d %-5d %-8d %-6d\n",
                temp_stu[i].year, temp_stu[i].class, temp_stu[i].id, temp_stu[i].name,
-               temp_stu[i].math, temp_stu[i].physics, temp_stu[i].c, temp_stu[i].total);
+               temp_stu[i].math, temp_stu[i].physics, temp_stu[i].c, temp_stu[i].total,temp_stu[i].rankClass,temp_stu[i].rankGrade);
     }
+    printf("-------------------------------------------------------------------------------------\n");
 }
