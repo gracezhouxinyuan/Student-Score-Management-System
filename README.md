@@ -50,3 +50,32 @@ project-root/
 ├── score.c
 └── score.txt
 ```
+## 04 运行方式
+
+#### 1) Windows（CMD）
+
+进入项目目录后执行：
+
+```cmd
+cd YOURPATH
+gcc -Wall -Wextra -std=c11 score.c -o score.exe
+score.exe
+```
+
+如果你使用 Visual Studio 编译器：
+
+```cmd
+cd YOURPATH
+cl /W4 score.c
+score.exe
+```
+
+#### 2) macOS
+
+进入项目目录后执行：
+
+```bash
+cd "/Users/your_name/your_path/project-root"
+gcc -Wall -Wextra -std=c11 score.c -o score
+./score
+```
